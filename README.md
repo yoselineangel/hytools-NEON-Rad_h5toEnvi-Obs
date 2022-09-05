@@ -9,11 +9,12 @@ It is advised to create and activate a conda environment to run Hytools.
 
 Once you have activated your environment, follow the steps:
 
-1. Copy/paste the here provided neonrad.py script within the hytools/io folder, e.g following path:
-/Users/yangello/opt/anaconda3/lib/python3.9/site-packages/hytools/io/neonrad.py
+1. Copy/paste the here provided neonrad.py and neon.py scripts within the hytools/io folder, e.g following path:
+          /Users/yangello/opt/anaconda3/lib/python3.9/site-packages/hytools/io/neonrad.py
+          /Users/yangello/opt/anaconda3/lib/python3.9/site-packages/hytools/io/envi.py
 
 2. Make a copy of the original base.py script (for instance: base copy.py), and copy/paste the here provided base.py:
-/Users/yangello/opt/anaconda3/lib/python3.9/site-packages/hytools/base.py
+          /Users/yangello/opt/anaconda3/lib/python3.9/site-packages/hytools/base.py
 
 3. Create an open a folder for your own hytools-based script and config files, e.g.:
 ~/hytools/
