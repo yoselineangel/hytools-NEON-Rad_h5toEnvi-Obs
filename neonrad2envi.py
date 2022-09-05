@@ -48,8 +48,10 @@ def main():
     ray.init(num_cpus = config_dict['num_cpus'])
 
     HyTools = ray.remote(ht.HyTools)
+    print('This is HyTools:',HyTools)
     actors = [HyTools.remote() for image in images]
-       _ = ray.get([a.read_file.remote(image,'neonrad') for a,image in zip(actors,images)])
+    print('This is Actors',actors)
+    _ = ray.get([a.read_file.remote(image,'neonrad') for a,image in zip(actors,images)])
 
     output_dir = config_dict["export"]["output_dir"]
             
