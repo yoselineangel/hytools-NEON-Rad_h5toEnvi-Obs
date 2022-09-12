@@ -1,7 +1,7 @@
 # hytools-NEON-Rad_h5toEnvi-Obs
 Hytools-based tools to export NEON Radiance H5 swaths to Envi + Obs ancillary files for ISOFIT atmospheric correction
 
-Instructions to convert NEON Radiance h5 swaths to Envi and to get ancillary Observation (obs) files
+Instructions to convert NEON Radiance h5 swaths to Envi and to get ancillary Observation (obs) and Location (loc or igm) files
 
 This tool is based on Hytools, so you would require to install it. Link: https://github.com/EnSpec/hytool
 
@@ -28,6 +28,7 @@ cd /Users/yangello/Documents/conda_envs/hytools/neon/scripts
 4. Copy/paste the here provided scripts, e.g.: ~/hytools/neon/scripts/
 
         |_Modyfying_h5_rad.py
+        |_neon_get_loc.py
         |_neon2envi_json_generate.py
         |_neonrad2envi.py
         |_neon2envi_run_setup_config.cfg
@@ -37,13 +38,17 @@ cd /Users/yangello/Documents/conda_envs/hytools/neon/scripts
 Open and update the provided Modifying_h5_rad.py accordingly to your own working path adn data. This script joins the integer and decimal, creating a new layer 'Radiance_total' that we will use for creating the ENVI files. Run the updated script:
 
         python Modifying_h5_rad.py
+        
+6. Open and update the provided neon_get_loc.py accordingly to your own working and output path and data. This script export the IGM layers as a 3-band 'loc' ENVI file. Run the updated script:
 
-6. Open and update the provided neon2envi_run_setup_config.cfg file including input h5 radiance files/output Envi files directory, etc. Then run:
+        python neon_get_loc.py
+
+7. Open and update the provided neon2envi_run_setup_config.cfg file including input h5 radiance files/output Envi files directory, etc. Then run:
 
         python neon2envi_json_generate.py --config neon2envi_run_setup_config.cfg
 
-7. The previous step have created a .json file within your configs folder, which will be used to set and run the neonrad2envi.py script. Run:
+8. The previous step have created a .json file within your configs folder, which will be used to set and run the neonrad2envi.py script. Run:
 
         python neonrad2envi.py --config /Users/yangello/Documents/conda_envs/hytools/neon/configs/neon2envi_config.json
 
-8. That's all. Check the radiance and obs files in your output directory. 
+9. That's all. Check the radiance and obs files in your output directory. 
