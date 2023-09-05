@@ -5,7 +5,7 @@ Instructions to convert NEON Radiance h5 swaths to Envi and to get ancillary Obs
 
 This tool is based on Hytools, so you would require to install it. Link: https://github.com/EnSpec/hytools
 
-It is advised to create and activate a conda environment to run Hytools.
+It is advised to create and activate a conda environment to run Hytools. For Mac M1, create the environment with python=3.7 
 
 Once you have activated your environment, follow the steps:
 
