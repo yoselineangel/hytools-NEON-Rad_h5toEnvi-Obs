@@ -3,7 +3,7 @@ Hytools-based tools to export NEON Radiance H5 swaths to Envi + Obs ancillary fi
 
 Instructions to convert NEON Radiance h5 swaths to Envi and to get ancillary Observation (obs) and Location (loc or igm) files
 
-This tool is based on Hytools, so you would require to install it. Link: https://github.com/EnSpec/hytool
+This tool is based on Hytools, so you would require to install it. Link: https://github.com/EnSpec/hytools
 
 It is advised to create and activate a conda environment to run Hytools.
 
