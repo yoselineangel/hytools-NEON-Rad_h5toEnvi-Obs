@@ -23,7 +23,7 @@ Once you have activated your environment, follow the steps:
                 |_configs/
                 |_scripts/
                
-cd /Users/yangello/Documents/conda_envs/hytools/neon/scripts
+cd /Users/yangello/hytools/neon/scripts
 
 4. Copy/paste the here provided scripts, e.g.: ~/hytools/neon/scripts/
 
@@ -41,7 +41,7 @@ Open and update the provided Modifying_h5_rad.py accordingly to your own working
         
 6. Open and update the provided neon_get_loc.py accordingly to your own working and output path and data. This script export the IGM layers as a 3-band 'loc' ENVI file. Run the updated script:
 
-        python neon_get_loc.py
+        python3 neon_get_loc.py
 
 7. Open and update the provided neon2envi_run_setup_config.cfg file including input h5 radiance files/output Envi files directory, etc. Then run:
 
