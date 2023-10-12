@@ -1,11 +1,30 @@
 # -*- coding: utf-8 -*-
-"""Functions for reading and writing ENVI formatted binary files
+"""
+HyTools:  Hyperspectral image processing library
+Copyright (C) 2021 University of Wisconsin
+
+Authors: Adam Chlus, Zhiwei Ye, Philip Townsend.
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, version 3 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+Functions for reading and writing ENVI formatted binary files
 
 Todo:
     * Implement opening of ENVI files with different byte order
 
 """
 import os
+import sys
 from collections import Counter
 import numpy as np
 
@@ -74,7 +93,7 @@ field_dict = {"acquisition time": "str",
               "z plot titles": "str"}
 
 
-def open_envi(hy_obj,anc_path = {}):
+def open_envi(hy_obj,anc_path = {}, ext = False):
     """Open ENVI formated image file and populate Hytools object.
 
 
@@ -82,17 +101,21 @@ def open_envi(hy_obj,anc_path = {}):
         src_file (str): Pathname of input ENVI image file, header assumed to be located in
         same directory.
         anc_path (dict): Dictionary with pathnames and band numbers of ancillary datasets.
+        ext: (bool) Input ENVI file has a file extension
 
     Returns:
         HyTools file object: Populated HyTools file object.
 
     """
 
-    if not os.path.isfile(os.path.splitext(hy_obj.file_name)[0] + ".hdr"):
+    header_file = os.path.splitext(hy_obj.file_name)[0] + ".hdr"
+
+
+    if not os.path.isfile(header_file):
         print("ERROR: Header file not found.")
         return None
 
-    header_dict = parse_envi_header(os.path.splitext(hy_obj.file_name)[0] + ".hdr")
+    header_dict = parse_envi_header(header_file)
     hy_obj.lines =  header_dict["lines"]
     hy_obj.columns =  header_dict["samples"]
     hy_obj.bands =   header_dict["bands"]
@@ -106,6 +129,12 @@ def open_envi(hy_obj,anc_path = {}):
     hy_obj.map_info = header_dict['map info']
     hy_obj.byte_order = header_dict['byte order']
     hy_obj.anc_path = anc_path
+    hy_obj.header_file = header_file
+
+    if hy_obj.byte_order == 1:
+        hy_obj.endianness = 'big'
+    else:
+        hy_obj.endianness = 'little'
 
     if isinstance(header_dict['bbl'],np.ndarray):
         hy_obj.bad_bands = np.array([x==1 for x in header_dict['bbl']])
@@ -126,6 +155,13 @@ def open_envi(hy_obj,anc_path = {}):
         up_r = hy_obj.data[0,-1,0]
         low_l = hy_obj.data[-1,0,0]
         low_r = hy_obj.data[-1,-1,0]
+
+        if hy_obj.endianness != sys.byteorder:
+            up_l = up_l.byteswap()
+            up_r = up_r.byteswap()
+            low_l = low_l.byteswap()
+            low_r = low_r.byteswap()
+
         counts = {v: k for k, v in Counter([up_l,up_r,low_l,low_r]).items()}
         hy_obj.no_data = counts[max(counts.keys())]
         hy_obj.close_data()
@@ -223,11 +259,7 @@ class WriteENVI:
         elif self.interleave == "bil":
             self.data[:,index,:] = band
         elif self.interleave == "bsq":
-            print('Band:',band.shape)
-            if band.shape[2] < 1:
-                self.data[index,:,:]= band
-            elif band.shape[2] > 1:
-                self.data = band
+            self.data[index,:,:]= band
 
     def write_chunk(self,chunk,line_index,column_index):
         """
@@ -253,12 +285,32 @@ class WriteENVI:
         elif self.interleave == "bsq":
             self.data[:,y_start:y_end,x_start:x_end] = np.moveaxis(chunk,-1,0)
 
+    def write_pixel(self,pixel,line_index,column_index):
+        """
+        Args:
+            pixel (TYPE): pixel array (bands).
+            line_index (int): Zero-based upper line index.
+            column_index (int): Zero-based left column index.
+
+        Returns:
+            None.
+
+        """
+
+        if self.interleave == "bip":
+            self.data[line_index,column_index,:] = pixel
+        elif self.interleave == "bil":
+            self.data[line_index,:,column_index] = pixel
+        elif self.interleave == "bsq":
+            self.data[:,line_index,column_index] = pixel
+
+
     def close(self):
         """Delete numpy memmap.
         """
         del self.data
 
-def envi_header_from_neon(hy_obj, interleave = 'bsq'):
+def envi_header_from_neon(hy_obj, interleave = 'bil'):
     """Create an ENVI header dictionary from NEON metadata
 
     Args:
@@ -289,19 +341,21 @@ def envi_header_from_neon(hy_obj, interleave = 'bsq'):
     return header_dict
 
 
-def write_envi_header(output_name,header_dict):
+def write_envi_header(output_name,header_dict,mode = 'w'):
     """Write ENVI header file to disk.
 
     Args:
         output_name (str): Header file pathname.
-        header_dict (dict): Populated ENVI header dictionary..
+        header_dict (dict): Populated ENVI header dictionary.
+        mode (str): File open mode. default: w
 
     Returns:
         None.
 
     """
 
-    header_file = open(output_name + ".hdr",'w+')
+    base_name = os.path.splitext(output_name)[0]
+    header_file = open(base_name + ".hdr",mode)
     header_file.write("ENVI\n")
 
     for key in header_dict.keys():
@@ -344,7 +398,7 @@ def envi_read_line(data,index,interleave):
     elif interleave == "bil":
         line = np.moveaxis(data[index,:,:],0,1)
     elif interleave == "bsq":
-        line = np.moveaxis(data[index,:,:],0,1)
+        line = np.moveaxis(data[:,index,:],0,1)
     return line
 
 def envi_read_column(data,index,interleave):
