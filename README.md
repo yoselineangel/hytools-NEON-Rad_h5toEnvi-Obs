@@ -1,22 +1,23 @@
-# hytools-NEON-Rad_h5toEnvi-Obs
+# hytools-NEON-Rad_h5toEnvi-Obs-Loc
 Hytools-based tools to export NEON Radiance H5 swaths to Envi and creating Obs and Loc ancillary input files for ISOFIT atmospheric correction
-
-Instructions to convert NEON Radiance h5 swaths to Envi and to get ancillary Observation (obs) and Location (loc or igm) files
 
 This tool is based on Hytools, so you would require to install it. Link: https://github.com/EnSpec/hytools
 
-It is advised to create and activate a conda environment to run Hytools. For Mac M1, create the environment with python=3.7 
+It is advised to create and activate a conda environment to run Hytools. For Mac M1, create the environment with python=3.8 
 
 Once you have activated your environment, follow the steps:
 
 1. Copy/paste the here provided neonrad.py and neon.py scripts within the hytools/io folder, e.g following path:
-          /Users/yangello/opt/anaconda3/lib/python3.9/site-packages/hytools/io/neonrad.py
-          /Users/yangello/opt/anaconda3/lib/python3.9/site-packages/hytools/io/envi.py
 
-2. Make a copy of the original base.py script (for instance: base copy.py), and copy/paste the here provided base.py:
-          /Users/yangello/opt/anaconda3/lib/python3.9/site-packages/hytools/base.py
+          /Users/yangello/opt/anaconda3/envs/hytools_env/lib/python3.8/site-packages/hytools/io/neonrad.py
+          /Users/yangello/opt/anaconda3/envs/hytools_env/lib/python3.8/site-packages/hytools/io/envi.py
 
-3. Create an open a folder for your own hytools-based script and config files, e.g.:
+3. Make a copy of the original base.py script (for instance: base copy.py), and copy/paste the here provided base.py:
+
+         /Users/yangello/opt/anaconda3/envs/hytools_env/lib/python3.8/site-packages/hytools/base.py
+
+
+5. Create an open a folder for your own hytools-based script and config files, e.g.:
 ~/hytools/
           
           |_neon/
