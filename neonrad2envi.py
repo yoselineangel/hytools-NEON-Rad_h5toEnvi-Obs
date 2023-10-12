@@ -78,7 +78,7 @@ def main():
                                       'aspect', 'cosine i','UTC time']
         anc_header['wavelength units'] = np.nan
         anc_header['wavelength'] = np.nan
-        anc_header['data type'] = 4
+        anc_header['data type'] = 5
 
         output_name = output_dir+ os.path.basename(os.path.splitext(hy_obj.file_name)[0])
         writer = WriteENVI(output_name + "_obs", anc_header)
