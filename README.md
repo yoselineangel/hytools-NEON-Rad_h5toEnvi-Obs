@@ -1,5 +1,5 @@
 # hytools-NEON-Rad_h5toEnvi-Obs
-Hytools-based tools to export NEON Radiance H5 swaths to Envi + Obs ancillary files for ISOFIT atmospheric correction
+Hytools-based tools to export NEON Radiance H5 swaths to Envi and creating Obs and Loc ancillary input files for ISOFIT atmospheric correction
 
 Instructions to convert NEON Radiance h5 swaths to Envi and to get ancillary Observation (obs) and Location (loc or igm) files
 
