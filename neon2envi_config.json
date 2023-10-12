@@ -1,0 +1,9 @@
+{
+   "input_files": [
+      "/Users/yangello/Documents/Data/NEON_rad_sensor_ortho_line/h5/NEON_D02_SERC_DP1_20160724_L005-1_radiance.h5"
+   ],
+   "export": {
+      "output_dir": "/Users/yangello/Documents/Data/NEON_rad_sensor_ortho_line/Envi/"
+   },
+   "num_cpus": 1
+}
