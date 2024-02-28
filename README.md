@@ -21,7 +21,6 @@ Once you have activated your environment, follow the steps:
 ~/hytools/
           
           |_neon/
-                |_configs/
                 |_scripts/
                
        cd /Users/YourUsername/hytools/neon/scripts
@@ -48,8 +47,8 @@ Open and update the provided Modifying_h5_rad.py accordingly to your own working
 
         python neon2envi_json_generate.py --config neon2envi_run_setup_config.cfg
 
-8. The previous step have created a .json file within your configs folder (see provided exampled), which will be used to set and run the neonrad2envi.py script. Run:
+8. The previous step have created a .json file within your scripts folder (see provided exampled), which will be used to set and run the neonrad2envi.py script. Run:
 
-        python neonrad2envi.py --config /Users/yangello/Documents/conda_envs/hytools/neon/configs/neon2envi_config.json
+        python neonrad2envi.py --config neon2envi_config.json
 
 9. That's all. Look for the radiance, obs and loc files in your output directory. 
